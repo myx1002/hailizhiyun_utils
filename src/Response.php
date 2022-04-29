@@ -2,6 +2,7 @@
 
 namespace Hlyun;
 
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 trait Response
@@ -64,11 +65,20 @@ trait Response
      */
     public function throwStrJson(Throwable $th, string $functionName = '', string $serviceName = '')
     {
-        $errMsg = '调用'.$serviceName.'的方法：'. $functionName.'()异常。错误信息为：'. $th->getMessage();
-        if (env('APP_DEBUG')) {
-            $errMsg .= $th->getTraceAsString();
+        $ref = new \ReflectionClass($th);
+        $className = $ref->getName();
+        Log::info($className);
+        if ($className === 'Illuminate\Validation\ValidationException') {
+            $errMsg = current($th->errors())[0] ?? '参数有误';
+        } elseif ($className === 'Hlyun\ServiceException') {
+            $errMsg = $th->getMessage();
+        } else {
+            $errMsg = '调用'.$serviceName.'的方法：'. $functionName.'()异常。错误信息为：'. $th->getMessage();
+            if (env('APP_DEBUG')) {
+                $errMsg .= $th->getTraceAsString();
+            }
+            Log::error($th->getTraceAsString());
         }
-        \Log::error($th->getTraceAsString());
-        return $this->failStrJson($errMsg);
+        return $this->failStrJson($errMsg); 
     }
 }
