@@ -34,6 +34,14 @@ if (!function_exists('date_str')) {
     }
 }
 
+// 根据数据库连接名称获取真实的数据库名称
+if (!function_exists('get_schema_by_connection')) {
+    function get_schema_by_connection(string $connection)
+    {
+        return config("database.connections.$connection.database");
+    }
+}
+
 /**
  * 判断浏览器名称和版本
  */
