@@ -7,11 +7,11 @@
 if (!function_exists('get_header_token')) {
     function get_header_token($type = 'center')
     {
-        $token = request()->header($type.'-token');
+        $token = request()->header($type . '-token');
         if (empty($token)) {
-            $token = request()->header($type.'_token');
+            $token = request()->header($type . '_token');
         }
-        
+
         return $token;
     }
 }
@@ -20,6 +20,17 @@ if (!function_exists('json_encode_uni')) {
     function json_encode_uni($data)
     {
         return json_encode($data, JSON_UNESCAPED_UNICODE);
+    }
+}
+
+if (!function_exists('json_decode_arr')) {
+    function json_decode_arr($data): array
+    {
+        $arr = json_decode($data, true);
+        if (is_null($arr)) {
+            return [];
+        }
+        return $arr;
     }
 }
 
@@ -189,7 +200,6 @@ function get_ip()
     $cip = isset($cips[0]) ? $cips[0] : 'unknown';
     unset($cips);
     return $cip;
-
 }
 
 
