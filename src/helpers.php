@@ -207,7 +207,7 @@ function get_ip()
 if (!function_exists('image_url')) {
     function image_url($document)
     {
-        $imageDomain = static_url();
+        $imageDomain = env('STATIC_URL', 'localhost');
         return rtrim($imageDomain, '/') . '/api/fileServer/getImage/' . $document;
     }
 }
