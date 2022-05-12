@@ -67,7 +67,7 @@ trait Response
     {
         $ref = new \ReflectionClass($th);
         $className = $ref->getName();
-        Log::info($className);
+        
         if ($className === 'Illuminate\Validation\ValidationException') {
             $errMsg = current($th->errors())[0] ?? '参数有误';
         } elseif ($className === 'Hlyun\ServiceException') {
