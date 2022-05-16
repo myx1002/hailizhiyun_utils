@@ -21,32 +21,14 @@ class MicroService
             if ($callerType === 0) {
                 throw new ApiException('微服务返回json字符串非法');
             }
-            throw new MicroService('微服务返回json字符串非法');
+            throw new ServiceException('微服务返回json字符串非法');
         }
         if (!isset($arr['data']) || !isset($arr['code'])) {
             if ($callerType === 1) {
                 throw new ApiException('微服务返回json字符串格式非法');
             }
-            throw new MicroService('微服务返回json字符串格式非法');
+            throw new ServiceException('微服务返回json字符串格式非法');
         }
         return $arr['data'];
     }
-
-    // /**
-    //  * 微服务拿微服务返回的数据，取其中的data,抛Serivice异常
-    //  *
-    //  * @param string $json
-    //  * @return void
-    //  */
-    // public function fetchWorkmateJsonData(string $json)
-    // {
-    //     $arr = json_decode($json, true);
-    //     if (!is_array($arr)) {
-    //         throw new ServiceException('微服务返回json字符串非法');
-    //     }
-    //     if (!isset($arr['data']) || !isset($arr['code'])) {
-    //         throw new ServiceException('微服务返回json字符串格式非法');
-    //     }
-    //     return $arr['data'];
-    // }
 }
