@@ -24,12 +24,13 @@ class MicroService
             throw new ServiceException('微服务返回json字符串非法');
         }
         if (!isset($arr['data'])) {
-            if (!isset($arr['code'])) {
+            if (!isset($arr['code']) || !isset($arr['message'])) {
                 $errMsg = '微服务返回json字符串格式非法';
-            } else {
-                $errMsg = $arr['code'];
             }
-
+            if ($arr['code'] != 0) {
+                $errMsg = $arr['message'];
+            }
+            
             if ($callerType === 0) {
                 throw new ApiException($errMsg);
             }
