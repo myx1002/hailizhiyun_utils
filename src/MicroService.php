@@ -32,9 +32,9 @@ class MicroService
             }
             
             if ($callerType === 0) {
-                throw new ApiException($errMsg);
+                throw new ApiException($errMsg, $arr['code']);
             }
-            throw new ServiceException($errMsg);
+            throw new ServiceException($errMsg, $arr['code']);
         }
         return $arr['data'];
     }
