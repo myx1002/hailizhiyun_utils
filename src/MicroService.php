@@ -29,8 +29,8 @@ class MicroService
             } else {
                 $errMsg = $arr['code'];
             }
-            
-            if ($callerType === 1) {
+
+            if ($callerType === 0) {
                 throw new ApiException($errMsg);
             }
             throw new ServiceException($errMsg);
