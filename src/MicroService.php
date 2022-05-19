@@ -12,7 +12,7 @@ class MicroService
      *
      * @param string $json
      * @param int $callerType 0聚合层调用 1微服务之间调用
-     * @return void
+     * @return mixed
      */
     public function fetchServiceJsonData(string $json, int $callerType = 0)
     {
