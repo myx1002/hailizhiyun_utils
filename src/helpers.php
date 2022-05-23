@@ -45,6 +45,16 @@ if (!function_exists('date_str')) {
     }
 }
 
+if (!function_exists('date_time_str')) {
+    function date_time_str(?int $timpstamp = null)
+    {
+        if (empty($timpstamp)) {
+            $timpstamp = time();
+        }
+        return date('Y-m-d H:i:s', $timpstamp);
+    }
+}
+
 // 根据数据库连接名称获取真实的数据库名称
 if (!function_exists('get_schema_by_connection')) {
     function get_schema_by_connection(string $connection)
