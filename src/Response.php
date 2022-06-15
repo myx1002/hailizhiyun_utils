@@ -38,13 +38,17 @@ trait Response
     }
 
     // 微服务用
-    public function successStrJson($data = [], string $message = ''): string
+    public function successStrJson($data = [], string $message = '', string $log): string
     {
-        return json_encode_uni([
+        $res = [
             'code' => 0,
             'message' => $message,
             'data' => $data
-        ]);
+        ];
+        if (!empty($log)) {
+            $res['log'] = $log;
+        }
+        return json_encode_uni($res);
     }
 
     // 微服务用
