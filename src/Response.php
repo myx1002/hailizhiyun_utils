@@ -3,6 +3,7 @@
 namespace Hlyun;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 trait Response
@@ -64,21 +65,31 @@ trait Response
      * @return string
      */
     public function throwStrJson(Throwable $th, string $functionName = '', string $serviceName = '')
-    {
-        $ref = new \ReflectionClass($th);
-        $className = $ref->getName();
-        
-        if ($className === 'Illuminate\Validation\ValidationException') {
+    {        
+        if ($th instanceof ValidationException) {
             $errMsg = current($th->errors())[0] ?? '参数有误';
-        } elseif ($className === 'Hlyun\ServiceException') {
+        } elseif ($th instanceof ServiceException) {
             $errMsg = $th->getMessage();
         } else {
-            $errMsg = '调用'.$serviceName.'的方法：'. $functionName.'()异常。错误信息为：'. $th->getMessage();
+            $logInfo = $this->assembleLogInfo($th);
+            $errMsg = '调用' . $serviceName . '的方法：' . $functionName . '()异常。';
             if (env('APP_DEBUG')) {
-                $errMsg .= $th->getTraceAsString();
+                $errMsg .= $logInfo;
             }
-            Log::error($th->getTraceAsString());
+            Log::error($logInfo);
         }
-        return $this->failStrJson($errMsg); 
+        return $this->failStrJson($errMsg);
+    }
+
+    /**
+     * 组装报错信息
+     *
+     * @param Throwable $th
+     * @return string
+     */
+    private function assembleLogInfo(Throwable $th): string
+    {
+        $logInfo =  '错误信息:' . $th->getMessage() . '。发生于:' . $th->getFile() . '(' . $th->getLine().')';
+        return $logInfo;
     }
 }
