@@ -81,6 +81,7 @@ trait Response
                 $errMsg .= $logInfo;
             }
             Log::error($logInfo);
+            Log::error($th->getTraceAsString());
         }
         return $this->failStrJson($errMsg);
     }
