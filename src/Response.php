@@ -38,7 +38,7 @@ trait Response
     }
 
     // 微服务用
-    public function successStrJson($data = [], string $message = '', string $log): string
+    public function successStrJson($data = [], string $message = '', string $log = ''): string
     {
         $res = [
             'code' => 0,
