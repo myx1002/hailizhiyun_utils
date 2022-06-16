@@ -2,11 +2,9 @@
 
 namespace Hlyun;
 
+//封装一些处理微服务交互的一些方法
 class MicroService
 {
-    //封装一些处理微服务交互的一些方法
-
-
     /**
      * 聚合层拿微服务返回的数据,取其中的data，抛api异常
      *
@@ -18,24 +16,31 @@ class MicroService
     {
         $arr = json_decode($json, true);
         if (!is_array($arr)) {
-            if ($callerType === 0) {
-                throw new ApiException('微服务返回json字符串非法');
-            }
-            throw new ServiceException('微服务返回json字符串非法');
+            $this->throwException($callerType, '微服务返回json字符串非法');
         }
-        if (!isset($arr['data'])) {
-            if (!isset($arr['code']) || !isset($arr['message'])) {
-                $errMsg = '微服务返回json字符串格式非法';
-            }
-            if ($arr['code'] != 0) {
-                $errMsg = $arr['message'];
-            }
-            
-            if ($callerType === 0) {
-                throw new ApiException($errMsg, $arr['code']);
-            }
-            throw new ServiceException($errMsg, $arr['code']);
+        if (!isset($arr['code']) || !isset($arr['message'])) {
+            $this->throwException($callerType, '微服务返回json字符串格式非法');
         }
+        if ($arr['code'] != 0 || !isset($arr['data'])) {
+            $this->throwException($callerType, $arr['message'], $arr['code']);
+        }
+
         return $arr['data'];
+    }
+
+    /**
+     * 抛异常
+     *
+     * @param integer $callerType 0聚合层调用 1微服务之间调用
+     * @param string $errMsg
+     * @param integer $code
+     * @return void
+     */
+    private function throwException(int $callerType = 0, string $errMsg, $code = 600)
+    {
+        if ($callerType === 0) {
+            throw new ApiException($errMsg, $code);
+        }
+        throw new ServiceException($errMsg, $code);
     }
 }
