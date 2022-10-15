@@ -74,6 +74,7 @@ trait Response
             $errMsg = current($th->errors())[0] ?? '参数有误';
         } elseif ($th instanceof ServiceException) {
             $errMsg = $th->getMessage();
+            return $th->failStrJson($errMsg, $th->getCode(), $th->data);
         } else {
             $logInfo = $this->assembleLogInfo($th);
             $errMsg = '调用' . $serviceName . '的方法：' . $functionName . '()异常。';
