@@ -1,13 +1,13 @@
 
 {
-    "name": "hlyun/utils",
+    "name": "hailizhiyun/utils",
     "description": "封装常用方法",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "waymen",
-            "email": "372203429@qq.com"
+            "name": "moyuxing",
+            "email": "963028983@qq.com"
         }
     ],
     "minimum-stability": "dev",
